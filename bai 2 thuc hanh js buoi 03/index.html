@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ứng dụng Tính Toán</title>
+    <style>
+        /* CSS để tạo giao diện */
+    </style>
+</head>
+<body>
+    <input type="number" id="a" placeholder="Nhập số a">
+    <input type="number" id="b" placeholder="Nhập số b">
+    <button onclick="calculate()">Submit</button>
+
+    <div id="results">
+        <p>Tổng: <span id="sum"></span></p>
+        <p>Hiệu: <span id="difference"></span></p>
+        <p>Tích: <span id="product"></span></p>
+        <p>Thương: <span id="quotient"></span></p>
+    </div>
+
+    <script>
+        function calculate() {
+            const a = document.getElementById("a").value;
+            const b = document.getElementById("b").value;
+
+            fetch(`http://127.0.0.1:8000/add/${a}/${b}`)
+                .then(response => response.json())
+                .then(data => document.getElementById("sum").textContent = data.result);
+
+            fetch(`http://127.0.0.1:8000/subtract/${a}/${b}`)
+                .then(response => response.json())
+                .then(data => document.getElementById("difference").textContent = data.result);
+
+            fetch(`http://127.0.0.1:8000/multiply/${a}/${b}`)
+                .then(response => response.json()) 
+                .then(data => document.getElementById("product").textContent = data.result);
+
+            fetch(`http://127.0.0.1:8000/divide/${a}/${b}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("quotient").textContent = data.error;
+                    } else {
+                        document.getElementById("quotient").textContent = data.result;
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
+
